@@ -1,38 +1,78 @@
 package lib
 
-import "math"
+import (
+	"bufio"
+	"math"
+	"os"
+)
 
 /*
 * read paper [ optimizations -> deferred to later ]
 * implementation [DONE]
  */
 
-func Diff(file1 []string, file2[]string) {
-    dag,_ := Lcs(file1,file2)
-    j := len(file1)
-    i := len(file2)
+type EditType string
+
+type Edit struct{
+    EditType EditType
+    Append string
+    Delete string
+    Same   string
+}
+
+const (
+    Append EditType     = "Append"
+    Delete EditType     = "Delete"
+    Identical EditType  = "Identical"
+)
+
+func Diff(file1 *os.File, file2 *os.File) (editList []Edit) {
+    list1 := make([]string,0)
+    list2 := make([]string,0)
+
+    scanner := bufio.NewScanner(file1)
+    for scanner.Scan() { list1 = append(list1, scanner.Text())}
+    scanner = bufio.NewScanner(file2)
+    for scanner.Scan() { list2 = append(list2, scanner.Text())}
+
+    editList = diff(list1, list2)
+    return
+}
+
+func diff(file1 []string, file2[]string) []Edit {
+    dag,_ := lcs(file1,file2)
+    i := len(file1)
+    j := len(file2)
+    edits := make([]Edit,0)
     for {
         if i == 0 && j == 0 {
             break
         }
         if i != 0 && dag[i][j] == dag[i-1][j] {
             i = i-1
-            defer println("d:",file1[i])
+            defer println("Delete:", file1[i])
+            edits = append(edits, Edit{ Delete: file1[i], EditType: Delete })
             continue
         }
         if j != 0 && dag[i][j] == dag[i][j-1] {
             j = j-1
-            defer println("a:",file2[j])
+            defer println("Append:", file2[j])
+            edits = append(edits, Edit{ Append: file2[j], EditType: Append })
             continue
         }
         if dag[i][j] == 1 + dag[i-1][j-1]{
             i,j = i-1,j-1
-            defer println("no change:",file1[i])
+            defer println("Identical:", file1[i])
+            edits = append(edits, Edit{ Same: file1[i], EditType: Identical })
         }
     }
+    for i2, j2 := 0, len(edits)-1; i2 < j2; i2, j2 = i2+1, j2-1 {
+        edits[i2], edits[j2] = edits[j2], edits[i2]
+    }
+    return edits
 }
 
-func Lcs(file1 []string, file2 []string) ([][]int, int){
+func lcs(file1 []string, file2 []string) ([][]int, int){
     file1Length := len(file1)+1
     file2Length := len(file2)+1
     seqArray := make([][]int, file1Length)
