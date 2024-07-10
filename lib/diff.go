@@ -50,19 +50,16 @@ func diff(file1 []string, file2[]string) []Edit {
         }
         if i != 0 && dag[i][j] == dag[i-1][j] {
             i = i-1
-            defer println("Delete:", file1[i])
             edits = append(edits, Edit{ Delete: file1[i], EditType: Delete })
             continue
         }
         if j != 0 && dag[i][j] == dag[i][j-1] {
             j = j-1
-            defer println("Append:", file2[j])
             edits = append(edits, Edit{ Append: file2[j], EditType: Append })
             continue
         }
         if dag[i][j] == 1 + dag[i-1][j-1]{
             i,j = i-1,j-1
-            defer println("Identical:", file1[i])
             edits = append(edits, Edit{ Same: file1[i], EditType: Identical })
         }
     }

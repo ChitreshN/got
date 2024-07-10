@@ -1,8 +1,9 @@
 package lib
 
 import (
-    "os"
-    "testing"
+	"io"
+	"os"
+	"testing"
 )
 
 func createTempFile(t *testing.T, content string) *os.File {
@@ -14,7 +15,7 @@ func createTempFile(t *testing.T, content string) *os.File {
     if err != nil {
         t.Fatalf("Failed to write to temp file: %v", err)
     }
-    _, err = file.Seek(0, os.SEEK_SET)
+    _, err = file.Seek(0, io.SeekStart)
     if err != nil {
         t.Fatalf("Failed to seek to beginning of temp file: %v", err)
     }
