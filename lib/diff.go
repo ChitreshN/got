@@ -9,7 +9,7 @@ import (
 /*
 * read paper [ optimizations -> deferred to later ]
 * implementation [DONE]
- */
+*/
 
 type EditType string
 
@@ -17,7 +17,7 @@ type Edit struct{
     EditType EditType
     Append string
     Delete string
-    Same   string
+    Identical   string
 }
 
 const (
@@ -60,7 +60,7 @@ func diff(file1 []string, file2[]string) []Edit {
         }
         if dag[i][j] == 1 + dag[i-1][j-1]{
             i,j = i-1,j-1
-            edits = append(edits, Edit{ Same: file1[i], EditType: Identical })
+            edits = append(edits, Edit{ Identical: file1[i], EditType: Identical })
         }
     }
     for i2, j2 := 0, len(edits)-1; i2 < j2; i2, j2 = i2+1, j2-1 {

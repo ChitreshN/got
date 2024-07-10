@@ -16,7 +16,7 @@ func Init() {
 
 func Add(fileName string) {
 	file, err := os.OpenFile(".got/index", os.O_RDONLY|os.O_CREATE, 0666)
-	check(err)
+	Check(err)
 
 	scanner := bufio.NewScanner(file)
 
@@ -30,7 +30,7 @@ func Add(fileName string) {
 	file.Close()
 
 	file, err = os.OpenFile(".got/index", os.O_APPEND|os.O_WRONLY, 0666)
-	check(err)
+	Check(err)
 
 	fileName = fileName + "\n"
 	_, err = file.Write([]byte(fileName))
@@ -39,10 +39,10 @@ func Add(fileName string) {
 
 func Status() (trackedFiles ,untrackedFiles []string){
 	directory, err := os.Getwd()
-	check(err)
+	Check(err)
 
 	fileList, err := os.ReadDir(directory)
-	check(err)
+	Check(err)
 
 	untrackedFiles = make([]string, 0)
     trackedFiles = make([]string,0)
@@ -56,7 +56,7 @@ func Status() (trackedFiles ,untrackedFiles []string){
 		}
 
 		file, err := os.OpenFile(".got/index", os.O_RDONLY|os.O_CREATE, 0666)
-		check(err)
+		Check(err)
 
 		fileName := fileInfo.Name()
 
