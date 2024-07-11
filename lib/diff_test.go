@@ -32,9 +32,9 @@ func TestDiff(t *testing.T) {
             "line1\nline2\nline3\n",
             "line1\nline3\nline4\n",
             []Edit{
-                {Same: "line1", EditType: Identical},
+                {Identical: "line1", EditType: Identical},
                 {Delete: "line2", EditType: Delete},
-                {Same: "line3", EditType: Identical},
+                {Identical: "line3", EditType: Identical},
                 {Append: "line4", EditType: Append},
             },
         },
@@ -42,8 +42,8 @@ func TestDiff(t *testing.T) {
             "line1\nline2\n",
             "line1\nline2\nline3\n",
             []Edit{
-                {Same: "line1", EditType: Identical},
-                {Same: "line2", EditType: Identical},
+                {Identical: "line1", EditType: Identical},
+                {Identical: "line2", EditType: Identical},
                 {Append: "line3", EditType: Append},
             },
         },
@@ -51,9 +51,9 @@ func TestDiff(t *testing.T) {
             "line1\nline2\nline3\n",
             "line1\nline3\n",
             []Edit{
-                {Same: "line1", EditType: Identical},
+                {Identical: "line1", EditType: Identical},
                 {Delete: "line2", EditType: Delete},
-                {Same: "line3", EditType: Identical},
+                {Identical: "line3", EditType: Identical},
             },
         },
     }
