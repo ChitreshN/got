@@ -2,6 +2,7 @@ package lib
 
 import (
 	"bufio"
+	"fmt"
 	"math"
 	"os"
 )
@@ -12,7 +13,22 @@ type Edit struct {
 	EditType  EditType
 	Append    string
 	Delete    string
-	Identical string
+	Identical int
+}
+
+func EditString(editList []Edit) string{
+    editString := ""
+	for _, val := range editList{
+		switch val.EditType {
+		case Append:
+			editString += "a"+fmt.Sprint(len(val.Append))+";"+val.Append
+		case Delete:
+			editString += "d"+fmt.Sprint(len(val.Delete))+";"+val.Delete
+		case Identical:
+			editString += "i"+fmt.Sprint(val.Identical)+";"
+		}
+	}
+    return editString
 }
 
 const (
@@ -59,7 +75,7 @@ func diff(file1 []string, file2 []string) []Edit {
 		}
 		if dag[i][j] == 1+dag[i-1][j-1] {
 			i, j = i-1, j-1
-			edits = append(edits, Edit{Identical: file1[i], EditType: Identical})
+			edits = append(edits, Edit{Identical: i, EditType: Identical})
 		}
 	}
 	for i2, j2 := 0, len(edits)-1; i2 < j2; i2, j2 = i2+1, j2-1 {

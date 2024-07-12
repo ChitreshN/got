@@ -45,7 +45,7 @@ func RunDiff() {
 		case Delete:
 			fmt.Printf("\033[31m-%s\033[0m\n", val.Delete)
 		case Identical:
-			fmt.Printf("%s\n", val.Identical)
+			fmt.Printf("%d\n", val.Identical)
 		}
 	}
 }
