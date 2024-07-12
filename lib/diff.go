@@ -6,11 +6,6 @@ import (
 	"os"
 )
 
-/*
-* read paper [ optimizations -> deferred to later ]
-* implementation [DONE]
- */
-
 type EditType string
 
 type Edit struct {
