@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 )
@@ -48,4 +49,42 @@ func RunDiff() {
 			fmt.Printf("%d\n", val.Identical)
 		}
 	}
+}
+
+func GetNthline(file string, n int) (string,error) {
+    fileD,err := os.OpenFile(file,os.O_RDONLY,0666)
+    if err != nil {
+        return "",err
+    }
+    scanner := bufio.NewScanner(fileD)
+
+    lineCount := 0
+
+    for scanner.Scan() {
+        lineCount++
+        if lineCount == n { return scanner.Text(),nil }
+    }
+
+    if err := scanner.Err(); err != nil { return "",err }
+
+    return "",fmt.Errorf("no line %d in file: %s",n,file)
+}
+
+func GetLastline(file string) (string,error) {
+    fileD,err := os.OpenFile(file,os.O_RDONLY,0666)
+    if err != nil {
+        fmt.Printf("no file named: %s",fileD)
+        return "",err
+    }
+    scanner := bufio.NewScanner(fileD)
+
+    lasLine := ""
+
+    for scanner.Scan() {
+        lasLine = scanner.Text()
+    }
+
+    if err := scanner.Err(); err != nil { return "",err }
+
+    return lasLine, nil
 }
