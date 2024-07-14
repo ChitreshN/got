@@ -51,12 +51,9 @@ func RunDiff() {
 	}
 }
 
-func GetNthline(file string, n int) (string,error) {
-    fileD,err := os.OpenFile(file,os.O_RDONLY,0666)
-    if err != nil {
-        return "",err
-    }
-    scanner := bufio.NewScanner(fileD)
+func GetNthline(file *os.File, n int) (string,error) {
+    file.Seek(0,0)
+    scanner := bufio.NewScanner(file)
 
     lineCount := 0
 
@@ -67,16 +64,12 @@ func GetNthline(file string, n int) (string,error) {
 
     if err := scanner.Err(); err != nil { return "",err }
 
-    return "",fmt.Errorf("no line %d in file: %s",n,file)
+    return "",fmt.Errorf("no line %d in file: %s",n,file.Name())
 }
 
-func GetLastline(file string) (string,error) {
-    fileD,err := os.OpenFile(file,os.O_RDONLY,0666)
-    if err != nil {
-        fmt.Printf("no file named: %s",fileD)
-        return "",err
-    }
-    scanner := bufio.NewScanner(fileD)
+func GetLastline(file *os.File) (string,error) {
+    file.Seek(0,0)
+    scanner := bufio.NewScanner(file)
 
     lasLine := ""
 
