@@ -47,27 +47,27 @@ func Status() (stagedFiles, trackedFiles, untrackedFiles []string) {
 	}
 	for _, fileName := range fileList {
 		tracked := false
-        staged := false
+		staged := false
 
 		idxFile, err := os.OpenFile(".got/index", os.O_RDONLY, 0666)
 		Check(err)
 		stgFile, err := os.OpenFile(".got/staged", os.O_RDONLY|os.O_APPEND, 0666)
 		idxScanner := bufio.NewScanner(idxFile)
 		stgScanner := bufio.NewScanner(stgFile)
-        for stgScanner.Scan() {
-            if stgScanner.Text() == fileName {
-                staged = true
-                stagedFiles = append(stagedFiles, fileName)
-                break
-            }
-        }
+		for stgScanner.Scan() {
+			if stgScanner.Text() == fileName {
+				staged = true
+				stagedFiles = append(stagedFiles, fileName)
+				break
+			}
+		}
 		for idxScanner.Scan() {
 			if idxScanner.Text() == fileName {
 				tracked = true
-                if !staged {
-                    trackedFiles = append(trackedFiles, fileName)
-                }
-                break
+				if !staged {
+					trackedFiles = append(trackedFiles, fileName)
+				}
+				break
 			}
 		}
 		if !tracked {

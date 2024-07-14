@@ -7,47 +7,54 @@ import (
 )
 
 func TestConstPrevCommit(t *testing.T) {
-	// Setup test environment
-	baseDir := ".got"
-	err := os.MkdirAll(baseDir, 0755)
-	Check(err)
-	defer os.RemoveAll(baseDir) // Clean up after test
-
-	// Create obj and com directories
-	objDir := filepath.Join(baseDir, "obj")
-	comDir := filepath.Join(baseDir, "com")
-	err = os.MkdirAll(objDir, 0755)
+	// Set up directories
+	objDir := filepath.Join(".got", "obj")
+	comDir := filepath.Join(".got", "com")
+	err := os.MkdirAll(objDir, 0755)
 	Check(err)
 	err = os.MkdirAll(comDir, 0755)
 	Check(err)
 
-	// Create dummy latest commit file
-	fileName := "testfile.txt"
-	objFilePath := filepath.Join(objDir, fileName)
-	err = os.WriteFile(objFilePath, []byte("line1\nline2\nline3\n"), 0666)
-	Check(err)
-
-	// Create dummy commit info file
-	comFilePath := filepath.Join(comDir, fileName)
-	err = os.WriteFile(comFilePath, []byte("a4;fouri2;i3;"), 0666)
-	Check(err)
-
-	// Call ConstPrevCommit
-	err = ConstPrevCommit(fileName)
-	if err != nil {
-		t.Fatalf("ConstPrevCommit failed: %v", err)
+	testCases := []struct {
+		fileName       string
+		fileContent    string
+		commitInfo     string
+		expectedResult string
+	}{
+		{"testfile1.txt", "line1\nline2\nline3\n", "a4;fouri2;i3;", "four\nline2\nline3\n"},
+		{"testfile2.txt", "alpha\nbeta\ngamma\n", "d5;alphai2;a5;delta", "beta\ndelta\n"},
+		{"testfile3.txt", "one\ntwo\nthree\n", "a3;ONEd3;twoi3;", "ONE\nthree\n"},
 	}
 
-	// Verify the contents of the reconstructed file
-	reconstructedData, err := os.ReadFile(fileName)
-	Check(err)
+	for _, tc := range testCases {
+		// Write the initial content to the obj file
+		objFilePath := filepath.Join(objDir, tc.fileName)
+		err = os.WriteFile(objFilePath, []byte(tc.fileContent), 0666)
+		Check(err)
 
-	expectedData := "four\nline2\nline3\n"
-	if string(reconstructedData) != expectedData {
-		t.Errorf("Expected %s, got %s", expectedData, string(reconstructedData))
+		// Write the commit info
+		comFilePath := filepath.Join(comDir, tc.fileName)
+		err = os.WriteFile(comFilePath, []byte(tc.commitInfo), 0666)
+		Check(err)
+
+		// Call ConstPrevCommit
+		err = ConstPrevCommit(tc.fileName)
+		if err != nil {
+			t.Fatalf("ConstPrevCommit failed for %s: %v", tc.fileName, err)
+		}
+
+		// Verify the contents of the reconstructed file
+		reconstructedData, err := os.ReadFile(tc.fileName)
+		Check(err)
+
+		if string(reconstructedData) != tc.expectedResult {
+			t.Errorf("For %s, expected %s, got %s", tc.fileName, tc.expectedResult, string(reconstructedData))
+		}
+
+		// Clean up for the next test case
+		os.Remove(tc.fileName)
 	}
 }
-
 func TestGetNthline(t *testing.T) {
 	// Create a temporary file
 
