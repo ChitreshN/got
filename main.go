@@ -27,5 +27,12 @@ func main() {
         lib.RunDiff()
     case "commit":
         lib.Commit("some message")
+    case "prev_commit":
+        if argLength < 3 {
+            fmt.Println("usage: ./got prev_commit file1")
+        }
+        lib.ConstPrevCommit(os.Args[2])
 	}
+    //how do this
+    //i am shtupid, i am shtupid
 }
