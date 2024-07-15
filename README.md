@@ -32,7 +32,11 @@
         changes but not added
 
 3. each commit should get its own directory
-    - this would help in constructing previous commits efficiently [Efficiently? nah easier] []
+    - this would help in constructing previous commits efficiently [Efficiently? nah easier] [Done]
+
+4. Previous commit calculation must happen for all the tracked files [ ]
+
+5. Checkout by specifiying a commit number [ ]
 
 
 
