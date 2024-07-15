@@ -14,6 +14,7 @@ func TestConstPrevCommit(t *testing.T) {
 	Check(err)
 	err = os.MkdirAll(comDir, 0755)
 	Check(err)
+    defer os.RemoveAll(".got")
 
 	testCases := []struct {
 		fileName       string
