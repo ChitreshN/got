@@ -6,6 +6,6 @@ func GetObjFilePath(file string) string {
     return path.Join(".got","obj",file)
 }
 
-func GetComFilePath(file string) string {
-    return path.Join(".got","com",file)
+func GetComFilePath(file string,dir string) string {
+    return path.Join(".got","com",dir,file)
 }

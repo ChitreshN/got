@@ -33,3 +33,11 @@
 
 3. each commit should get its own directory
     - this would help in constructing previous commits efficiently [Efficiently? nah easier] []
+
+
+
+## Future? [Ill prolly never get to these, but lets write them down anyway]
+
+1. Branches
+2. Encoding files to keep the size small
+3. More?

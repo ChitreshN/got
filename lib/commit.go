@@ -36,8 +36,22 @@ func Commit(message string) {
 }
 
 func storeDiff(fileName string) {
+	// TODO someway to store, last commit number -> file created during init
+	// directories based on this
+	cntFile, err := os.OpenFile(".got/com/cf", os.O_RDONLY, 0666)
+	Check(err)
+
+	line1, _ := GetNthline(cntFile, 1)
+	cnt, err := strconv.Atoi(line1)
+	Check(err)
+	newcnt := fmt.Sprint(cnt + 1)
+
+	cntFile.Close()
+
+	os.WriteFile(".got/com/cf", []byte(newcnt+"\n"+newcnt), 0666)
+
 	dir := filepath.Dir(fileName)
-	err := os.MkdirAll(".got/com/"+dir, 0755)
+	err = os.MkdirAll(".got/com/" + newcnt + "/" + dir, 0755)
 	Check(err)
 	latestCommit, err := os.OpenFile(GetObjFilePath(fileName), os.O_RDONLY, 0666)
 	if err != nil {
@@ -49,7 +63,7 @@ func storeDiff(fileName string) {
 	commitDiff := Diff(currentFile, latestCommit)
 	commitString := EditString(commitDiff)
 
-	commitFile, err := os.OpenFile(GetComFilePath(fileName), os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
+	commitFile, err := os.OpenFile(GetComFilePath(fileName,newcnt), os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
 	commitFile.Write([]byte(commitString + "\n"))
 	commitFile.Close()
 }
@@ -60,7 +74,11 @@ func ConstLatestCommit(fileName string) error {
 		fmt.Printf("obj file for: %s, doesnt exist\n", fileName)
 		return err
 	}
-	comfName := GetComFilePath(fileName)
+	cntFile, err := os.OpenFile(".got/com/cf", os.O_RDONLY, 0666)
+	Check(err)
+
+	cnt, _ := GetNthline(cntFile, 1)
+	comfName := GetComFilePath(fileName,cnt)
 
 	comInfoFile, err := os.OpenFile(comfName, os.O_RDONLY, 0666)
 	if err != nil {

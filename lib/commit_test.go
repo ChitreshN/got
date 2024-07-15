@@ -39,7 +39,7 @@ func TestConstPrevCommit(t *testing.T) {
 		Check(err)
 
 		// Call ConstPrevCommit
-		err = ConstPrevCommit(tc.fileName)
+		err = ConstLatestCommit(tc.fileName)
 		if err != nil {
 			t.Fatalf("ConstPrevCommit failed for %s: %v", tc.fileName, err)
 		}
