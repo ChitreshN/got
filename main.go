@@ -31,7 +31,7 @@ func main() {
         if argLength < 3 {
             fmt.Println("usage: ./got prev_commit file1")
         }
-        lib.ConstPrevCommit(os.Args[2])
+        lib.ConstLatestCommit(os.Args[2])
 	}
     //how do this
     //i am shtupid, i am shtupid

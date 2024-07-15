@@ -54,7 +54,7 @@ func storeDiff(fileName string) {
 	commitFile.Close()
 }
 
-func ConstPrevCommit(fileName string) error {
+func ConstLatestCommit(fileName string) error {
 	latestCommit, err := os.OpenFile(GetObjFilePath(fileName), os.O_RDONLY, 0666)
 	if err != nil {
 		fmt.Printf("obj file for: %s, doesnt exist\n", fileName)
@@ -119,6 +119,59 @@ func constCommit(prevCommit *os.File, commitString string) ([]byte, error) {
 			i += dataLength + 1
 
 		case 'd':
+			s := i
+			for commitString[i] != ';' {
+				i++
+			}
+			dataLength, err := strconv.Atoi(commitString[s+1 : i])
+			if err != nil {
+				fmt.Printf("skill issues: %v", err)
+				return []byte(""), err
+			}
+			i += dataLength + 1
+		default:
+			err := fmt.Errorf("unknown command:%s ", string(commitString[i]))
+			return []byte(""), err
+		}
+	}
+	return []byte(data), nil
+}
+
+func constnextCommit(currentCommit *os.File, commitString string) ([]byte, error) {
+	data := ""
+	for i := 0; i < len(commitString); {
+		switch commitString[i] {
+		case 'i':
+			s := i
+			for commitString[i] != ';' {
+				i++
+			}
+			lineNo, err := strconv.Atoi(commitString[s+1 : i])
+			if err != nil {
+				fmt.Printf("skill issues: %v", err)
+				return []byte(""), err
+			}
+			line, err := GetNthline(currentCommit, lineNo)
+			if err != nil {
+				return []byte(""), err
+			}
+			data += line + "\n"
+			i += 1
+
+		case 'd':
+			s := i
+			for commitString[i] != ';' {
+				i++
+			}
+			dataLength, err := strconv.Atoi(commitString[s+1 : i])
+			if err != nil {
+				fmt.Printf("skill issues: %v", err)
+				return []byte(""), err
+			}
+			data += commitString[i+1:i+1+dataLength] + "\n"
+			i += dataLength + 1
+
+		case 'a':
 			s := i
 			for commitString[i] != ';' {
 				i++
