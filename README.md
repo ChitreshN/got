@@ -1,47 +1,30 @@
-# Todos
 
-1. Figure out how to read files [DONE]
-2. Make directory [DONE]
-3. Calculating diffs [DONE]
-    - Base case -empty file
-    - Non tivial case
-        - Howww
-4. get changes save [DONE]
-5. when asked for it build the thing to that commit
+## Features 
 
-## Today [Really?, yeah not that day :)]
+1. init
+    - this should create the directory strucuture required for the .got directory
+    - also initialize the cf file - this keeps track of the number of commits and the current commit we are in (useful for checkouts)
 
-1. Commits
-    - How save state of files [Done]
-        - save the recent commited state
-    - How calculate diff [Done]
-        - compare current saved version with latest commit
-    - How to save commit info
-        - this turned out interesting
-            - so create a string, all the info other than the identical line stuff is there
-    - How to build [Trivial once the above two are done][well not really trivial, well it is, but cumbersome] [Done]
+2. add
+    - when a file is added for the first time, it should be added to the list of tracked files and also get staged at the same time
+    - if a file is already tracked just add to the staged list
 
-2. Types of files [Done]
-    - untracked
-    no saved version
-    - Tracked
-    has a saved version
-        - staged
-        there are some changes and they are added
-        - unstaged
-        changes but not added
+3. commit
+    - get changes of all staged files
+    - construct the file diffs and store the encoded edit string in the com directory under the 
+    specific directory
+    - these directories are use full when we want to checkout a specific commit
+    - remove the staged file, this will clear the list of staged files resetting it to empty
 
-3. each commit should get its own directory
-    - this would help in constructing previous commits efficiently [Efficiently? nah easier] [Done]
+4. status
+    - get all files in the directory (ignoring .git and .got)
+    - based on the staged and index files, display the status of files
+    - currently doesnt check for changes in files - to be done later
 
-4. Previous commit calculation must happen for all the tracked files [ ]
+5. prev_commit
+    - constructs the previos commit of a given file
+    - expand this to construct previous commits of all the files
+    - eventually expand this to construction of any commit
 
-5. Checkout by specifiying a commit number [ ]
-
-
-
-## Future? [Ill prolly never get to these, but lets write them down anyway]
-
-1. Branches
-2. Encoding files to keep the size small
-3. More?
+6. Diff
+    - given a file calculate and output its diff with the previous commit

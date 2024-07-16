@@ -9,11 +9,12 @@ import (
 func TestConstPrevCommit(t *testing.T) {
 	// Set up directories
 	objDir := filepath.Join(".got", "obj")
-	comDir := filepath.Join(".got", "com")
-	err := os.MkdirAll(objDir, 0755)
+	comDir := filepath.Join(".got", "com", "1")
+    err := os.MkdirAll(objDir, 0755)
 	Check(err)
 	err = os.MkdirAll(comDir, 0755)
 	Check(err)
+    err = os.WriteFile(".got/com/cf",[]byte("1\n1\n"),0666)
     defer os.RemoveAll(".got")
 
 	testCases := []struct {
@@ -28,23 +29,19 @@ func TestConstPrevCommit(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		// Write the initial content to the obj file
 		objFilePath := filepath.Join(objDir, tc.fileName)
 		err = os.WriteFile(objFilePath, []byte(tc.fileContent), 0666)
 		Check(err)
 
-		// Write the commit info
 		comFilePath := filepath.Join(comDir, tc.fileName)
 		err = os.WriteFile(comFilePath, []byte(tc.commitInfo), 0666)
 		Check(err)
 
-		// Call ConstPrevCommit
 		err = ConstLatestCommit(tc.fileName)
 		if err != nil {
 			t.Fatalf("ConstPrevCommit failed for %s: %v", tc.fileName, err)
 		}
 
-		// Verify the contents of the reconstructed file
 		reconstructedData, err := os.ReadFile(tc.fileName)
 		Check(err)
 
@@ -52,25 +49,21 @@ func TestConstPrevCommit(t *testing.T) {
 			t.Errorf("For %s, expected %s, got %s", tc.fileName, tc.expectedResult, string(reconstructedData))
 		}
 
-		// Clean up for the next test case
 		os.Remove(tc.fileName)
 	}
 }
 func TestGetNthline(t *testing.T) {
-	// Create a temporary file
 
 	fileName := "testfile"
 	objFilePath := filepath.Join("", fileName)
     err := os.WriteFile(objFilePath, []byte("line1\nline2\nline3\n"), 0666)
 	Check(err)
-	// Close and reopen the file for reading
     file, err := os.Open(fileName)
 	if err != nil {
 		t.Fatalf("Failed to reopen temp file: %v", err)
 	}
 	defer file.Close()
 
-	// Test getting the nth line
 	tests := []struct {
 		lineNumber int
 		expected   string
@@ -79,11 +72,10 @@ func TestGetNthline(t *testing.T) {
 		{1, "line1", false},
 		{2, "line2", false},
 		{3, "line3", false},
-		{6, "", true}, // Line 6 does not exist
+		{6, "", true}, 
 	}
 
 	for _, tt := range tests {
-		// Reset file offset to the beginning for each test
 		file.Seek(0, 0)
 
 		line, err := GetNthline(file, tt.lineNumber)

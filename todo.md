@@ -32,4 +32,16 @@
         changes but not added
 
 3. each commit should get its own directory
-    - this would help in constructing previous commits efficiently [Efficiently? nah easier] []
+    - this would help in constructing previous commits efficiently [Efficiently? nah easier] [Done]
+
+4. Previous commit calculation must happen for all the tracked files [ ]
+
+5. Checkout by specifiying a commit number [ ]
+
+
+
+## Future? [Ill prolly never get to these, but lets write them down anyway]
+
+1. Branches
+2. Encoding files to keep the size small
+3. More?

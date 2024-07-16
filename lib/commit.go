@@ -36,8 +36,6 @@ func Commit(message string) {
 }
 
 func storeDiff(fileName string) {
-	// TODO someway to store, last commit number -> file created during init
-	// directories based on this
 	cntFile, err := os.OpenFile(".got/com/cf", os.O_RDONLY, 0666)
 	Check(err)
 
@@ -86,7 +84,6 @@ func ConstLatestCommit(fileName string) error {
 		return err
 	}
 
-	// what do here
 	commitInfo, err := GetLastline(comInfoFile)
 
 	data, err := constCommit(latestCommit, commitInfo)
