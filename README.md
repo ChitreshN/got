@@ -23,8 +23,8 @@
 
 5. prev_commit
     - constructs the previos commit of a given file
-    - expand this to construct previous commits of all the files
-    - eventually expand this to construction of any commit
+    - the previous here is prev commit - 1,i.e the last but one commit, the last commit is stored in the objFile (change name later)
+    - expand this to construction of any commit
 
 6. Diff
     - given a file calculate and output its diff with the previous commit
