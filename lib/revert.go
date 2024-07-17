@@ -13,45 +13,45 @@ func ConstLatestCommit() error {
 
 	cnt, _ := GetNthline(cntFile, 1)
 
-    dirLength := len(".got/com/"+cnt+"/")
+	dirLength := len(".got/com/" + cnt + "/")
 
-    fileList := GetAllFiles(path.Join(".got","com",cnt))
+	fileList := GetAllFiles(path.Join(".got", "com", cnt))
 
-    for _, fileName := range fileList {
+	for _, fileName := range fileList {
 
-        fileName = fileName[dirLength:]
+		fileName = fileName[dirLength:]
 
-        comfName := GetComFilePath(fileName,cnt)
+		comfName := GetComFilePath(fileName, cnt)
 
-        latestCommit, err := os.OpenFile(GetObjFilePath(fileName), os.O_RDONLY, 0666)
-        if err != nil {
-            fmt.Printf("obj file for: %s, doesnt exist\n", fileName)
-            return err
-        }
+		latestCommit, err := os.OpenFile(GetObjFilePath(fileName), os.O_RDONLY, 0666)
+		if err != nil {
+			fmt.Printf("obj file for: %s, doesnt exist\n", fileName)
+			return err
+		}
 
-        comInfoFile, err := os.OpenFile(comfName, os.O_RDONLY, 0666)
-        if err != nil {
-            fmt.Printf("no previous commit for: %s\n", comfName)
-            return err
-        }
+		comInfoFile, err := os.OpenFile(comfName, os.O_RDONLY, 0666)
+		if err != nil {
+			fmt.Printf("no previous commit for: %s\n", comfName)
+			return err
+		}
 
-        commitInfo, err := GetLastline(comInfoFile)
+		commitInfo, err := GetLastline(comInfoFile)
 
-        data, err := constCommit(latestCommit, commitInfo)
-        if err != nil {
-            fmt.Printf("couldnt construct commit: %v\n", err)
-            return err
-        }
+		data, err := constCommit(latestCommit, commitInfo)
+		if err != nil {
+			fmt.Printf("couldnt construct commit: %v\n", err)
+			return err
+		}
 
-        err = os.WriteFile(fileName, data, 0666)
-        if err != nil {
-            fmt.Printf("coulndt write to file: %v\n", fileName)
-        }
-        return nil
-    }
-    
-    return nil
-    
+		err = os.WriteFile(fileName, data, 0666)
+		if err != nil {
+			fmt.Printf("coulndt write to file: %v\n", fileName)
+		}
+		return nil
+	}
+
+	return nil
+
 }
 
 func constCommit(prevCommit *os.File, commitString string) ([]byte, error) {
