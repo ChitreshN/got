@@ -38,6 +38,7 @@
 
 5. Checkout by specifiying a commit number [ ]
 
+6. .gotognore file (going with the pattern of replacing i's with o's)
 
 
 ## Future? [Ill prolly never get to these, but lets write them down anyway]
