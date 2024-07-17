@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"path/filepath"
 	"strconv"
 )
 
@@ -13,17 +14,20 @@ func ConstLatestCommit() error {
 
 	cnt, _ := GetNthline(cntFile, 1)
 
-	dirLength := len(".got/com/" + cnt + "/")
-
 	fileList := GetAllFiles(path.Join(".got", "com", cnt))
 
 	for _, fileName := range fileList {
 
-		fileName = fileName[dirLength:]
+		fileName,err = filepath.Rel((".got/com/"+cnt),fileName)
+
+        if err != nil {
+            fmt.Printf("stupid pathh!!!: %s\n", ".got/com/"+cnt)
+            return err
+        }
 
 		comfName := GetComFilePath(fileName, cnt)
 
-		latestCommit, err := os.OpenFile(GetObjFilePath(fileName), os.O_RDONLY, 0666)
+        latestCommit, err := os.OpenFile(GetObjFilePath(fileName), os.O_RDONLY, 0666)
 		if err != nil {
 			fmt.Printf("obj file for: %s, doesnt exist\n", fileName)
 			return err
@@ -51,7 +55,6 @@ func ConstLatestCommit() error {
 	}
 
 	return nil
-
 }
 
 func constCommit(prevCommit *os.File, commitString string) ([]byte, error) {
