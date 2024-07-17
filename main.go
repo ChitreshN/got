@@ -28,10 +28,7 @@ func main() {
     case "commit":
         lib.Commit("some message")
     case "prev_commit":
-        if argLength < 3 {
-            fmt.Println("usage: ./got prev_commit file1")
-        }
-        lib.ConstLatestCommit(os.Args[2])
+        lib.ConstLatestCommit()
 	}
     //how do this
     //i am shtupid, i am shtupid

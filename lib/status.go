@@ -6,31 +6,10 @@ import (
 	"path/filepath"
 )
 
-func getAllFiles(directory string) []string {
-	var allFiles []string
-	fileList, err := os.ReadDir(directory)
-	Check(err)
-
-	for _, fileInfo := range fileList {
-		if fileInfo.Name() == ".git" || fileInfo.Name() == ".got" {
-			continue
-		}
-		if !fileInfo.IsDir() {
-			allFiles = append(allFiles, filepath.Join(directory, fileInfo.Name()))
-		} else {
-			dir := filepath.Join(directory, fileInfo.Name())
-			subFiles := getAllFiles(dir)
-			allFiles = append(allFiles, subFiles...)
-		}
-	}
-
-	return allFiles
-}
-
 func Status() (stagedFiles, trackedFiles, untrackedFiles []string) {
 	directory, err := os.Getwd()
 	Check(err)
-	fileList := getAllFiles(directory)
+	fileList := GetAllFiles(directory)
 
 	for i := 0; i < len(fileList); i++ {
 		fileList[i], err = filepath.Rel(directory, fileList[i])
