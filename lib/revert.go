@@ -16,6 +16,7 @@ func ConstLatestCommit() error {
 
 	fileList := GetAllFiles(path.Join(".got", "com", cnt))
 
+
 	for _, fileName := range fileList {
 
 		fileName,err = filepath.Rel((".got/com/"+cnt),fileName)
@@ -40,6 +41,10 @@ func ConstLatestCommit() error {
 		}
 
 		commitInfo, err := GetLastline(comInfoFile)
+        if err != nil {
+            fmt.Printf("last line err: %v\n",err)
+            return err
+        }
 
 		data, err := constCommit(latestCommit, commitInfo)
 		if err != nil {
@@ -51,7 +56,6 @@ func ConstLatestCommit() error {
 		if err != nil {
 			fmt.Printf("coulndt write to file: %v\n", fileName)
 		}
-		return nil
 	}
 
 	return nil
