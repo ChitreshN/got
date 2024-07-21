@@ -18,7 +18,6 @@ func GetAllFiles(directory string) []string {
 	var allFiles []string
 	fileList, err := os.ReadDir(directory)
 	Check(err)
-
 	for _, fileInfo := range fileList {
 		if fileInfo.Name() == ".git" || fileInfo.Name() == ".got" {
 			continue
@@ -31,6 +30,13 @@ func GetAllFiles(directory string) []string {
 			allFiles = append(allFiles, subFiles...)
 		}
 	}
-
 	return allFiles
+}
+
+func GetIndexFiles() ([]string,error) {
+    return getLines(".got/index")
+}
+
+func GetStagedFiles() ([]string,error) {
+    return getLines(".got/staged")
 }

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/got/lib"
+	"github.com/ChitreshN/got/lib"
 	"os"
 )
 
@@ -28,7 +28,12 @@ func main() {
     case "commit":
         lib.Commit("some message")
     case "prev_commit":
-        lib.ConstLatestCommit()
+        lib.LatestCommit()
+    case "revert":
+        lib.Revert()
+    case "checkout":
+        err := lib.Checkout(os.Args[2])
+        lib.Check(err)
 	}
     //how do this
     //i am shtupid, i am shtupid
