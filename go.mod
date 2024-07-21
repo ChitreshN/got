@@ -1,3 +1,3 @@
-module github.com/got
+module github.com/ChitreshN/got
 
 go 1.20
