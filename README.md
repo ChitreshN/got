@@ -1,3 +1,10 @@
+# Got
+
+1. A custom vcs.
+2. Better than available things? Nope.
+3. Fastet? Prolly not.
+4. Efficient in terms of file usage? If i tried to make it.
+5. Whats the point of this then? It was fun to build, plus i had other things to do, doing this helped me not feel guilty about not doing those.
 
 ## Features 
 
@@ -28,3 +35,10 @@
 
 6. Diff
     - given a file calculate and output its diff with the previous commit
+
+7. Revert
+    - Revert files to the previous commit
+
+8. Checkout
+    - Given a commit number, changes the file contents of all tracked files to that commit state
+    - Currently only works backwards, need to change it so that works other way too 
