@@ -34,16 +34,14 @@
 3. each commit should get its own directory
     - this would help in constructing previous commits efficiently [Efficiently? nah easier] [Done]
 
-4. Previous commit calculation must happen for all the tracked files [ DONE ]
+4. Previous commit calculation must happen for all the tracked files [ Done ]
 
-5. Checkout by specifiying a commit number [ ]
+5. Checkout by specifiying a commit number [ Done ]
 
-6. .gotognore file (going with the pattern of replacing i's with o's)
 
 
 ## Future? [Ill prolly never get to these, but lets write them down anyway]
 
 1. Branches
 2. Encoding files to keep the size small
-3. A hosting site!!!
-4. More?
+3. More?
