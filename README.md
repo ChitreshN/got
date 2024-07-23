@@ -56,7 +56,7 @@
 
 3. The Diff Algorithm
     - The base of this is the longest common subsequence problem
-    - once that is calculated, we can use the dag, thats built when calculating the lcs and use it to get the changes [code here]("lib/diff.go")
+    - once that is calculated, we can use the dag, thats built when calculating the lcs and use it to get the changes [code here](lib/diff.go)
 
 4. Adding and staging files
     - Done with the help of 2 files
