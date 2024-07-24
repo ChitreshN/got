@@ -7,7 +7,8 @@
     - Non tivial case
         - Howww
 4. get changes save [DONE]
-5. when asked for it build the thing to that commit
+5. when asked for it build the thing to that commit [ Done ]
+6. Blobs
 
 ## Today [Really?, yeah not that day :)]
 
