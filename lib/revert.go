@@ -92,8 +92,11 @@ func constCommit(prevCommit *os.File, commitString string) ([]byte, error) {
 				return []byte(""), err
 			}
 			data += line + "\n"
-			i += 1
-
+            i += 1
+			for commitString[i] != ';' {
+				i++
+			}
+            i += 1
 		case 'a':
 			s := i
 			for commitString[i] != ';' {
@@ -132,6 +135,10 @@ func constnextCommit(currentCommit *os.File, commitString string) ([]byte, error
 		switch commitString[i] {
 		case 'i':
 			s := i
+			for commitString[i] != ';' {
+				i++
+			}
+            i += 1
 			for commitString[i] != ';' {
 				i++
 			}
