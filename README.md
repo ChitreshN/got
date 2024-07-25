@@ -72,8 +72,8 @@
     - The solution i came up with is the following
     - Have some sort of way to track, how many number of commits are made to the repo
     - Using this, create a directory with the current commit number as its name
-    - Under this directory, store the encoded diffs of the files which were staged for that particular commit
-    - And then also update the data in the obj directory (obj folder contains the file in the most recent commit )
+    - Under this directory, store the encoded diffs of the files which were staged for that particular commit [encoding algorith is here](lib/diff.go) [decoding is done seperately, should i refactore these? nah](lib/revert.go)
+    - And then also update the data in the obj directory (obj folder contains the file in the most recent commit)
 
 5. Revert
     - Just copy the contents in the obj file and update the correspondig files in the working directory
@@ -87,5 +87,3 @@
 7. Checkout
     - Same thing as prev commit, but keep track how many commits we have walked back
     - when we reach the required commit, call revert, this will update all the files to the required state
-    - this currently only works backwards, but the principle to do the otherway is essentially the same
-    - that requires additional information in the *commitString*.
