@@ -72,7 +72,7 @@
     - The solution i came up with is the following
     - Have some sort of way to track, how many number of commits are made to the repo
     - Using this, create a directory with the current commit number as its name
-    - Under this directory, store the encoded diffs of the files which were staged for that particular commit [encoding algorith is here](lib/diff.go) [decoding is done seperately, should i refactore these? nah](lib/revert.go)
+    - Under this directory, store the encoded diffs of the files which were staged for that particular commit [encoding algorith is here](lib/diff.go), [decoding is done seperately, should i refactore these? nah](lib/revert.go)
     - And then also update the data in the obj directory (obj folder contains the file in the most recent commit)
 
 5. Revert
