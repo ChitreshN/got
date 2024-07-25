@@ -9,11 +9,16 @@ import (
 
 type EditType string
 
+type Pair struct {
+    first int
+    second int
+}
+
 type Edit struct {
 	EditType  EditType
 	Append    string
 	Delete    string
-	Identical int
+	Identical Pair
 }
 
 func EditString(editList []Edit) string{
@@ -25,7 +30,7 @@ func EditString(editList []Edit) string{
 		case Delete:
 			editString += "d"+fmt.Sprint(len(val.Delete))+";"+val.Delete
 		case Identical:
-			editString += "i"+fmt.Sprint(val.Identical)+";"
+			editString += "i"+fmt.Sprint(val.Identical.first)+";"+fmt.Sprint(val.Identical.second)+";"
 		}
 	}
     return editString
@@ -75,7 +80,7 @@ func diff(file1 []string, file2 []string) []Edit {
 		}
 		if dag[i][j] == 1+dag[i-1][j-1] {
 			i, j = i-1, j-1
-			edits = append(edits, Edit{Identical: i+1, EditType: Identical})
+			edits = append(edits, Edit{Identical: Pair{i+1,j+1}, EditType: Identical})
 		}
 	}
 	for i2, j2 := 0, len(edits)-1; i2 < j2; i2, j2 = i2+1, j2-1 {

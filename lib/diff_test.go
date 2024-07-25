@@ -29,18 +29,18 @@ func TestEditString(t *testing.T) {
 		{
 			name: "Identical test",
 			editList: []Edit{
-				{Identical: 1, EditType: Identical},
+				{Identical: Pair{1,1}, EditType: Identical},
 			},
-			expected: "i1;",
+			expected: "i1;1;",
 		},
 		{
 			name: "Mixed edits test",
 			editList: []Edit{
 				{Append: "Hello", EditType: Append},
-				{Identical: 2, EditType: Identical},
+				{Identical: Pair{2,2}, EditType: Identical},
 				{Delete: "World", EditType: Delete},
 			},
-			expected: "a5;Helloi2;d5;World",
+			expected: "a5;Helloi2;2;d5;World",
 		},
 	}
 
@@ -80,9 +80,9 @@ func TestDiff(t *testing.T) {
             "line1\nline2\nline3\n",
             "line1\nline3\nline4\n",
             []Edit{
-                {Identical: 1, EditType: Identical},
+                {Identical: Pair{1,1}, EditType: Identical},
                 {Delete: "line2", EditType: Delete},
-                {Identical: 3, EditType: Identical},
+                {Identical: Pair{3,2}, EditType: Identical},
                 {Append: "line4", EditType: Append},
             },
         },
@@ -90,8 +90,8 @@ func TestDiff(t *testing.T) {
             "line1\nline2\n",
             "line1\nline2\nline3\n",
             []Edit{
-                {Identical: 1, EditType: Identical},
-                {Identical: 2, EditType: Identical},
+                {Identical: Pair{1,1}, EditType: Identical},
+                {Identical: Pair{2,2}, EditType: Identical},
                 {Append: "line3", EditType: Append},
             },
         },
@@ -99,9 +99,9 @@ func TestDiff(t *testing.T) {
             "line1\nline2\nline3\n",
             "line1\nline3\n",
             []Edit{
-                {Identical: 1, EditType: Identical},
+                {Identical: Pair{1,1}, EditType: Identical},
                 {Delete: "line2", EditType: Delete},
-                {Identical: 3, EditType: Identical},
+                {Identical: Pair{3,2}, EditType: Identical},
             },
         },
     }
