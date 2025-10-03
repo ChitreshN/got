@@ -10,8 +10,8 @@ import (
 type EditType string
 
 type Pair struct {
-    first int
-    second int
+    First int
+    Second int
 }
 
 type Edit struct {
@@ -30,7 +30,7 @@ func EditString(editList []Edit) string{
 		case Delete:
 			editString += "d"+fmt.Sprint(len(val.Delete))+";"+val.Delete
 		case Identical:
-			editString += "i"+fmt.Sprint(val.Identical.first)+";"+fmt.Sprint(val.Identical.second)+";"
+			editString += "i"+fmt.Sprint(val.Identical.First)+";"+fmt.Sprint(val.Identical.Second)+";"
 		}
 	}
     return editString
