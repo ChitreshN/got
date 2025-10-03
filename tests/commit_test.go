@@ -5,17 +5,19 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/ChitreshN/got/lib"
 )
 
 func TestLatestCommit(t *testing.T) {
 	objDir := filepath.Join(".got", "obj")
 	comDir := filepath.Join(".got", "com", "1")
 	err := os.MkdirAll(objDir, 0755)
-	Check(err)
+	lib.Check(err)
 	err = os.MkdirAll(comDir, 0755)
-	Check(err)
+	lib.Check(err)
 	err = os.WriteFile(".got/com/cf", []byte("1\n1\n"), 0666)
-	Check(err)
+	lib.Check(err)
 	defer os.RemoveAll(".got")
 
 	testCases := []struct {
@@ -38,7 +40,7 @@ func TestLatestCommit(t *testing.T) {
         if err != nil { log.Fatalln(err) }
 	}
 
-    err = LatestCommit()
+    err = lib.LatestCommit()
 	if err != nil {
 		t.Fatalf("ConstLatestCommit failed: %v", err)
 	}
