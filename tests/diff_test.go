@@ -4,41 +4,49 @@ import (
 	"io"
 	"os"
 	"testing"
+
+	"github.com/ChitreshN/got/lib"
 )
+
+
+type Pair struct {
+    first int
+    second int
+}
 
 func TestEditString(t *testing.T) {
 	tests := []struct {
 		name     string
-		editList []Edit
+		editList []lib.Edit
 		expected string
 	}{
 		{
 			name: "Append test",
-			editList: []Edit{
-				{Append: "Hello", EditType: Append},
+			editList: []lib.Edit{
+				{Append: "Hello", EditType: lib.Append},
 			},
 			expected: "a5;Hello",
 		},
 		{
 			name: "Delete test",
-			editList: []Edit{
-				{Delete: "World", EditType: Delete},
+			editList: []lib.Edit{
+				{Delete: "World", EditType: lib.Delete},
 			},
 			expected: "d5;World",
 		},
 		{
 			name: "Identical test",
-			editList: []Edit{
-				{Identical: Pair{1,1}, EditType: Identical},
+			editList: []lib.Edit{
+				{Identical: lib.Pair{First :1, Second :1}, EditType: lib.Identical},
 			},
 			expected: "i1;1;",
 		},
 		{
 			name: "Mixed edits test",
-			editList: []Edit{
-				{Append: "Hello", EditType: Append},
-				{Identical: Pair{2,2}, EditType: Identical},
-				{Delete: "World", EditType: Delete},
+			editList: []lib.Edit{
+				{Append: "Hello", EditType: lib.Append},
+				{Identical: lib.Pair{First: 2,Second: 2}, EditType: lib.Identical},
+				{Delete: "World", EditType: lib.Delete},
 			},
 			expected: "a5;Helloi2;2;d5;World",
 		},
@@ -46,7 +54,7 @@ func TestEditString(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := EditString(tt.editList)
+			result := lib.EditString(tt.editList)
 			if result != tt.expected {
 				t.Errorf("got %v, want %v", result, tt.expected)
 			}
@@ -74,34 +82,34 @@ func TestDiff(t *testing.T) {
     cases := []struct {
         content1 string
         content2 string
-        expected []Edit
+        expected []lib.Edit
     }{
         {
             "line1\nline2\nline3\n",
             "line1\nline3\nline4\n",
-            []Edit{
-                {Identical: Pair{1,1}, EditType: Identical},
-                {Delete: "line2", EditType: Delete},
-                {Identical: Pair{3,2}, EditType: Identical},
-                {Append: "line4", EditType: Append},
+            []lib.Edit{
+                {Identical: lib.Pair{First: 1,Second: 1}, EditType: lib.Identical},
+                {Delete: "line2", EditType: lib.Delete},
+                {Identical: lib.Pair{First: 3,Second: 2}, EditType: lib.Identical},
+                {Append: "line4", EditType: lib.Append},
             },
         },
         {
             "line1\nline2\n",
             "line1\nline2\nline3\n",
-            []Edit{
-                {Identical: Pair{1,1}, EditType: Identical},
-                {Identical: Pair{2,2}, EditType: Identical},
-                {Append: "line3", EditType: Append},
+            []lib.Edit{
+                {Identical: lib.Pair{First: 1,Second: 1}, EditType: lib.Identical},
+                {Identical: lib.Pair{First: 2,Second: 2}, EditType: lib.Identical},
+                {Append: "line3", EditType: lib.Append},
             },
         },
         {
             "line1\nline2\nline3\n",
             "line1\nline3\n",
-            []Edit{
-                {Identical: Pair{1,1}, EditType: Identical},
-                {Delete: "line2", EditType: Delete},
-                {Identical: Pair{3,2}, EditType: Identical},
+            []lib.Edit{
+                {Identical: lib.Pair{First: 1,Second: 1}, EditType: lib.Identical},
+                {Delete: "line2", EditType: lib.Delete},
+                {Identical: lib.Pair{First: 3,Second: 2}, EditType: lib.Identical},
             },
         },
     }
@@ -112,7 +120,7 @@ func TestDiff(t *testing.T) {
         file2 := createTempFile(t, c.content2)
         defer os.Remove(file2.Name())
 
-        got := Diff(file1, file2)
+        got := lib.Diff(file1, file2)
         if len(got) != len(c.expected) {
             t.Errorf("Diff() got %v edits, expected %v edits", len(got), len(c.expected))
         }

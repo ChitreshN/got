@@ -4,6 +4,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/ChitreshN/got/lib"
 )
 
 
@@ -11,7 +13,7 @@ func TestGetNthline(t *testing.T) {
 	fileName := "testfile"
 	objFilePath := filepath.Join("", fileName)
     err := os.WriteFile(objFilePath, []byte("line1\nline2\nline3\n"), 0666)
-	Check(err)
+	lib.Check(err)
     file, err := os.Open(fileName)
 	if err != nil {
 		t.Fatalf("Failed to reopen temp file: %v", err)
@@ -29,7 +31,7 @@ func TestGetNthline(t *testing.T) {
 	}
 	for _, tt := range tests {
 		file.Seek(0, 0)
-		line, err := GetNthline(file, tt.lineNumber)
+		line, err := lib.GetNthline(file, tt.lineNumber)
 		if (err != nil) != tt.shouldErr {
 			t.Errorf("GetNthline(%d) error = %v, shouldErr = %v", tt.lineNumber, err, tt.shouldErr)
 			continue
